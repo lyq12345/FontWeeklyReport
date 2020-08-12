@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+
 # Ant Design Pro
 
 This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
@@ -54,4 +56,10 @@ npm test
 
 ## More
 
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+# You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+
+# FontWeeklyReport
+
+前端小报
+
+> > > > > > > 968e470162570582505df99336a7b8a2873c089e

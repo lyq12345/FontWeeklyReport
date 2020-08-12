@@ -7,15 +7,20 @@ const { Header, Content, Footer, Sider } = Layout;
 
 //创建上下文
 export const ReportContext = createContext();
+
 function Detail(props) {
+  const [reportData, setReportData] = useState(null);
   let reportId = props.match.params.reportId;
+  let data = {};
   const param = {
     weekCode: reportId,
   };
   getReportByWeek(param).then(response => {
-    console.log(response.data);
+    // TODO:改成response.data
+    data = response;
   });
-
+  setReportData(data);
+  console.log(1);
   return (
     <div>
       <Layout>
@@ -30,7 +35,9 @@ function Detail(props) {
         <Content>
           <Layout className={styles.siteLayoutBackground} style={{ padding: '24px 0' }}>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              <Articles reportId={reportId} />
+              <ReportContext.Provider value={{ reportData, setReportData }}>
+                <Articles />
+              </ReportContext.Provider>
             </Content>
             <Sider className={styles.siteLayoutBackground} width={300}>
               Sider

@@ -1,11 +1,12 @@
 import { List } from 'antd';
-import { ReportContext } from '../../index.jsx';
+import { reportContext } from '../../index.jsx';
 import { useContext } from 'react';
 
 function Articles() {
-  let { reportData, setReportData } = useContext(ReportContext);
-  //console.log(reportData);
-  return <div></div>;
+  const report = useContext(reportContext);
+  return (<div>
+          <p>父组件传过来的值{report}</p>
+        </div>);
 }
 
 export default Articles;

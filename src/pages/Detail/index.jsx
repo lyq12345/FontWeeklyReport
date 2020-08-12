@@ -6,21 +6,23 @@ import { getReportByWeek } from '@/api/apiFunctions';
 const { Header, Content, Footer, Sider } = Layout;
 
 //创建上下文
-export const ReportContext = createContext();
-
+export const reportContext = createContext(null);
 function Detail(props) {
-  const [reportData, setReportData] = useState(null);
+  const [reportData, setReportData] = useState(0);
   let reportId = props.match.params.reportId;
-  let data = {};
-  const param = {
-    weekCode: reportId,
-  };
-  getReportByWeek(param).then(response => {
-    // TODO:改成response.data
-    data = response;
-  });
-  setReportData(data);
-  console.log(1);
+  // let data = {};
+  // const param = {
+  //   weekCode: reportId,
+  // };
+  // getReportByWeek(param).then(response => {
+  //   // TODO:改成response.data
+  //   data = response;
+  //   setReportData(data);
+  // });
+
+  // function changeData(){
+  //   setReportData(val);
+  // }
   return (
     <div>
       <Layout>
@@ -35,9 +37,12 @@ function Detail(props) {
         <Content>
           <Layout className={styles.siteLayoutBackground} style={{ padding: '24px 0' }}>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              <ReportContext.Provider value={{ reportData, setReportData }}>
+            <Button onClick={() => {
+                  setReportData(reportData + 1);
+                }}>点击</Button>
+              <reportContext.Provider value={reportData}>
                 <Articles />
-              </ReportContext.Provider>
+              </reportContext.Provider>
             </Content>
             <Sider className={styles.siteLayoutBackground} width={300}>
               Sider

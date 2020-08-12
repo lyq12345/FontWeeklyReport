@@ -129,6 +129,11 @@ export default {
               component: './Home',
             },
             {
+              name: '详情页',
+              path: '/detail/:reportId',
+              component: './Detail',
+            },
+            {
               name: '工作台',
               icon: 'smile',
               path: '/dashboardworkplace',
@@ -164,7 +169,7 @@ export default {
   },
   disableRedirectHoist: true,
   cssLoaderOptions: {
-    modules: false,
+    modules: true,
     getLocalIdent: (context, _, localName) => {
       if (
         context.resourcePath.includes('node_modules') ||

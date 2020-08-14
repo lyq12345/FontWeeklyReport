@@ -1,28 +1,29 @@
 import { Button, Layout } from 'antd';
 import styles from './index.less';
 import Articles from './components/Articles';
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { getReportByWeek } from '@/api/apiFunctions';
+import { result } from 'lodash';
 const { Header, Content, Footer, Sider } = Layout;
 
 //创建上下文
 export const reportContext = createContext(null);
-function Detail(props) {
-  const [reportData, setReportData] = useState(0);
-  let reportId = props.match.params.reportId;
-  // let data = {};
-  // const param = {
-  //   weekCode: reportId,
-  // };
-  // getReportByWeek(param).then(response => {
-  //   // TODO:改成response.data
-  //   data = response;
-  //   setReportData(data);
-  // });
 
-  // function changeData(){
-  //   setReportData(val);
-  // }
+function Detail(props) {
+  const [reportData, setReportData] = useState([{}]);
+  const [tags, setTags] = useState([]);
+
+  let reportId = props.match.params.reportId;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getReportByWeek({ weekCode: reportId });
+      setReportData(result.data.data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div>
       <Layout>
@@ -37,14 +38,11 @@ function Detail(props) {
         <Content>
           <Layout className={styles.siteLayoutBackground} style={{ padding: '24px 0' }}>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-            <Button onClick={() => {
-                  setReportData(reportData + 1);
-                }}>点击</Button>
-              <reportContext.Provider value={reportData}>
-                <Articles />
+              <reportContext.Provider value={{ reportData, setReportData }}>
+                <Articles reportId={reportId}/>
               </reportContext.Provider>
             </Content>
-            <Sider className={styles.siteLayoutBackground} width={300}>
+            <Sider className={styles.siteLayoutBackground} width={400}>
               Sider
             </Sider>
           </Layout>

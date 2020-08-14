@@ -1,4 +1,7 @@
 import { Card, List } from 'antd';
+import { useEffect, useState } from 'react';
+import { getWeekCodes } from '@/api/apiFunctions';
+import styles from './index.less';
 const { Meta } = Card;
 const cardList = [
   {
@@ -39,20 +42,29 @@ const cardList = [
 ];
 
 function CardWall() {
+  const [weekCodes, setWeekCodes] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getWeekCodes();
+      setWeekCodes(result.data.data);
+    };
+
+    fetchData();
+  }, []);
   return (
-    <div className="listContainer">
+    <div className={styles.cardlistContainer}>
       <List
         size="large"
         grid={{
           gutter: 16,
           column: 4,
         }}
-        dataSource={cardList}
+        dataSource={weekCodes}
         renderItem={item => (
           <List.Item>
             <Card
               onClick={() => {
-                window.open(`/detail/${item.id}`, '_blank');
+                window.open(`/detail/${item}`, '_blank');
               }}
               style={{ textAlign: 'center' }}
               hoverable
@@ -65,7 +77,7 @@ function CardWall() {
               }
               size="small"
             >
-              <Meta title={item.title} />
+              <Meta title={`前端小报第${item}期`} />
             </Card>
           </List.Item>
         )}

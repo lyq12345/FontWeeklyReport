@@ -1,5 +1,4 @@
-import { Layout, PageHeader, Button } from 'antd';
-//import style from './style.less';
+import { Layout } from 'antd';
 import style from './index.less';
 import CardWall from './components/CardWall';
 

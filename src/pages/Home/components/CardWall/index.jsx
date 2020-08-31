@@ -1,4 +1,5 @@
 import { Card, List } from 'antd';
+import { CoffeeOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { getWeekCodes } from '@/api/apiFunctions';
 import styles from './index.less';
@@ -64,7 +65,7 @@ function CardWall() {
           <List.Item>
             <Card
               onClick={() => {
-                window.open(`/detail/${item}`, '_blank');
+                window.open(`/detail/${item.weekCode}`, '_blank');
               }}
               style={{ textAlign: 'center' }}
               hoverable
@@ -77,7 +78,7 @@ function CardWall() {
               }
               size="small"
             >
-              <Meta title={`前端小报第${item}期`} />
+              <Meta title={`前端小报第${item.weekCode}期（${item.weekDate}）`} />
             </Card>
           </List.Item>
         )}

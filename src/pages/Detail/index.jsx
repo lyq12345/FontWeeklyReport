@@ -1,9 +1,10 @@
-import { Button, Layout } from 'antd';
+import { Button, Layout, Tag } from 'antd';
 import styles from './index.less';
 import Articles from './components/Articles';
+import Tags from './components/Tags';
+import Recent from './components/Recent';
 import { createContext, useState, useEffect } from 'react';
 import { getReportByWeek } from '@/api/apiFunctions';
-import { result } from 'lodash';
 const { Header, Content, Footer, Sider } = Layout;
 
 //创建上下文
@@ -11,18 +12,35 @@ export const reportContext = createContext(null);
 
 function Detail(props) {
   const [reportData, setReportData] = useState([{}]);
+  const [filteredData, setFilteredData] = useState([]);
   const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
 
   let reportId = props.match.params.reportId;
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await getReportByWeek({ weekCode: reportId });
-      setReportData(result.data.data);
+      const datas = result.data.data;
+      const categories = datas.map(item => {
+        return item.category;
+      });
+      const norepeatCatgs = Array.from(new Set(categories));
+      setReportData(datas);
+      setFilteredData(datas);
+      setTags(norepeatCatgs);
+      setSelectedTags(norepeatCatgs);
     };
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const filtered = reportData.filter(item => {
+      return selectedTags.indexOf(item.category) > -1;
+    });
+    setFilteredData(filtered);
+  }, [selectedTags]);
 
   return (
     <div>
@@ -38,12 +56,15 @@ function Detail(props) {
         <Content>
           <Layout className={styles.siteLayoutBackground} style={{ padding: '24px 0' }}>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              <reportContext.Provider value={{ reportData, setReportData }}>
-                <Articles reportId={reportId}/>
+              <reportContext.Provider value={{ filteredData, setFilteredData }}>
+                <Articles reportId={reportId} />
               </reportContext.Provider>
             </Content>
             <Sider className={styles.siteLayoutBackground} width={400}>
-              Sider
+              <reportContext.Provider value={{ tags, setTags, selectedTags, setSelectedTags }}>
+                <Tags />
+              </reportContext.Provider>
+              <Recent reportId={reportId} />
             </Sider>
           </Layout>
         </Content>

@@ -26,8 +26,7 @@ const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2004521_ivwofu7ysyj.js',
 });
 function Articles(props) {
-  const { reportData, setReportData } = useContext(reportContext);
-  console.log(reportData);
+  const { filteredData, setFilteredData } = useContext(reportContext);
   return (
     <div className={styles.detailArticles}>
       <div>
@@ -36,13 +35,17 @@ function Articles(props) {
 
       <List
         itemLayout="horizontal"
-        dataSource={reportData}
+        dataSource={filteredData}
         renderItem={item => (
           <List.Item style={{ width: '80%' }}>
             <List.Item.Meta
               title={
                 <div>
-                  <a style={{ fontSize: '20px' }} href={item.link} target="_blank">
+                  <a
+                    style={{ fontSize: '20px', color: '#1890ff' }}
+                    href={item.link}
+                    target="_blank"
+                  >
                     {item.title}
                   </a>
                   <span className={styles.inlineTag}>{item.category}</span>
